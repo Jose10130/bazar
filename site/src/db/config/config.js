@@ -1,6 +1,10 @@
 module.exports = {
   development: {
-    use_env_variable: "DATABASE_URL",
+    username: "bazar_db_s472_user",
+    password: "zK1Y6SQY9pLd0br3LzhuKisHnPQOqTho",
+    database: "bazar_db_s472",
+    host: "dpg-d8j65448aovs738vo150-a.oregon-postgres.render.com",
+    port: 5432,
     dialect: "postgres",
     dialectOptions: {
       ssl: {
@@ -11,7 +15,11 @@ module.exports = {
   },
 
   test: {
-    use_env_variable: "DATABASE_URL",
+    username: "bazar_db_s472_user",
+    password: "zK1Y6SQY9pLd0br3LzhuKisHnPQOqTho",
+    database: "bazar_db_s472",
+    host: "dpg-d8j65448aovs738vo150-a.oregon-postgres.render.com",
+    port: 5432,
     dialect: "postgres",
     dialectOptions: {
       ssl: {
@@ -22,7 +30,11 @@ module.exports = {
   },
 
   production: {
-    use_env_variable: "DATABASE_URL",
+    username: "bazar_db_s472_user",
+    password: "zK1Y6SQY9pLd0br3LzhuKisHnPQOqTho",
+    database: "bazar_db_s472",
+    host: "dpg-d8j65448aovs738vo150-a.oregon-postgres.render.com",
+    port: 5432,
     dialect: "postgres",
     dialectOptions: {
       ssl: {
