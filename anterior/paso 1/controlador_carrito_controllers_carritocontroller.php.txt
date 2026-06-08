@@ -1,0 +1,55 @@
+<?php
+require_once '../config/database.php';
+require_once '../models/Carrito.php';
+
+class CarritoController {
+    private $db;
+    private $carrito;
+
+    public function __construct() {
+        $database = new Database();
+        $this->db = $database->getConnection();
+        $this->carrito = new Carrito($this->db);
+    }
+
+    public function añadirAlCarrito($datos) {
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: login.php");
+            exit;
+        }
+
+        $this->carrito->usuario_id = $_SESSION['usuario_id'];
+        $this->carrito->producto_id = $datos['producto_id'];
+        $this->carrito->cantidad = $datos['cantidad'];
+
+        if ($this->carrito->agregar()) {
+            header("Location: carrito.php?msg=agregado");
+        }
+    }
+
+    public function listar() {
+        $usuario_id = $_SESSION['usuario_id'] ?? 0;
+        return $this->carrito->obtenerPorUsuario($usuario_id);
+    }
+
+    public function actualizar($id, $cantidad) {
+        // Validar stock antes de actualizar (Lógica simplificada para el ejemplo)
+        if ($this->carrito->actualizarCantidad($id, $cantidad)) {
+            echo json_encode(['status' => 'success']);
+        }
+    }
+
+    public function quitar($id) {
+        if ($this->carrito->eliminar($id)) {
+            header("Location: carrito.php?msg=eliminado");
+        }
+    }
+
+    public function limpiar() {
+        $usuario_id = $_SESSION['usuario_id'];
+        if ($this->carrito->vaciar($usuario_id)) {
+            header("Location: carrito.php?msg=vaciado");
+        }
+    }
+}
+?>

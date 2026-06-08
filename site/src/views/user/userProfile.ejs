@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<%- include("../partials/head", {title: "Mi perfil" }) %>
+
+
+    <body class="home-body">
+        <%- include("../partials/header") %>
+            <main class="bg-user-perfil">
+                <div class="perfil">
+                    <div class="perfil-container">
+                        <div class="user-img"> <img src="<%= /http/.test(user.avatar) ? user.avatar : '/images/users/' + user.avatar%>"  alt="" ></div>
+                      
+                        <div class="user-info">
+                            <h2 class="user-name-info">
+                                <%= user.name + " " + user.surname %>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="user-dates">
+                        <ul>
+                            <h2>Informacion Personal</h2>
+                            <li>Nombre: <%= user.name + " " + user.surname %>
+                            </li>
+                            <li>DNI: <%= user.dni %>
+                            </li>
+                            <li>Email: <%= user.email %>
+                            </li>
+                            <li>Teléfono: <%= user.phoneNumber %>
+                            </li>
+                        </ul>
+
+                        <ul>
+                            <h2>Datos de domicilio</h2>
+                            <li>Calle: <%= user.address.street + " " + user.address.streetNo %>
+                            </li>
+                            <li>Ciudad: <%= user.address.city %>
+                            </li>
+                            <li>Código postal: <%= user.address.zipCode %>
+                            </li>
+                            <li>Provincia: <%= user.address.province %>
+                            </li>
+                            <li>País: <%= user.address.country %>
+                            </li>
+                        </ul>
+                        <div class="update-user-info">
+                            <a href="/perfil/editar">Modificar Datos<i class="fa-solid fa-pen-to-square"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        <h2 id="favorites-profile">Favoritos</h2>
+                        <div class="favorites-profile">
+                          <% if (user.favorites.length > 0) { %>
+                            <% user.favorites.forEach(favorite => { %>
+                                <div class="product-card">
+                                    <button class="add-to-favorites" data-product-id="<%= favorite.id %>" <%= !locals.userLogin ? "disabled" : "" %>>
+                                      <% if (user && user.favorites) { %>
+                                        <% const isFavorite = user.favorites.some(favorite => favorite.id === favorite.id); %>
+                                        <i class="fa <%= isFavorite ? 'fa-solid fa-heart' : 'fa-regular fa-heart' %>"></i>
+                                      <% } else { %>
+                                        <i class="fa fa-regular fa-heart "></i>
+                                      <% } %>
+                                    </button>
+                                      <div class="product-image">
+                                          <img src="/images/products/<%= favorite.image%>" alt="<%= favorite.name%>">
+                                      </div>
+                                      <div class="product-details">
+                                          <h3 class="product-title"><%= favorite.name%></h3>
+                                          <p class="product-description"><%= favorite.description %></p>
+                                          <div class="product-price">
+                                              <span class="price">$<%= favorite.price %></span>
+                                              <span class="discount">$9999.99</span>
+                                          </div>
+                                          <div class="product-actions">
+                                              <a href="/productos/detalle/<%= favorite.id%>" class="view-product">Ver Producto</a>
+                                              <button href="#" class="add-to-cart" data-product-id="<%= favorite.id %>" disabled>Agregar al carrito</button>
+                                          </div>
+                                         
+                                          
+                                          
+                                      </div>
+                                  </div>
+                           
+                            <% }) %>
+                          <% } else { %>
+                            <p>No tienes productos favoritos.</p>
+                          <% } %>
+</div>                     
+            </main>
+
+            <%- include("../partials/footer") %>
+                <%- include("../partials/scripts") %>
+    </body>
+
+</html>

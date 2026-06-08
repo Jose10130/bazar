@@ -1,0 +1,118 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.dashboard-body{
+    background-color: #dee2e6;
+}
+.dash-navBar {
+    display: flex;
+    /* background-color: #dee2e6; */
+    flex-direction: column;
+    margin: 0;
+    background-color: white;
+
+}
+
+.img-logo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    background-color: #dee2e6;
+}
+
+.img-logo img {
+    width: auto;
+    height: 100px;
+}
+
+.barra-lateral {
+    background-image: linear-gradient( 85.2deg,  rgb(38, 5, 44) 7.5%, rgb(42, 5, 46) 88.7% );
+   
+    width: 88px;
+    height: 100%;
+    transition: width 0.3s;
+    overflow-x: hidden;
+    top: 0px;
+    z-index: 3;
+   /*  border-right: solid 5px #dee2e6; */
+    position: fixed;
+    overflow-y: auto;
+}
+
+.barra-lateral:hover {
+    width: 350px;
+    box-shadow: 5px 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.barra-lateral h2 {
+    display: flex;
+    align-items: center;
+    padding: 10px 0px;
+    margin-top: 10px;
+    width: 350px;
+    height: 110px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    border-bottom: solid 5px #dee2e6;
+}
+
+.barra-lateral h2 i {
+    width: 72px;
+    font-size: 20px;
+    margin-right: 20px;
+    padding-left: 8px;
+}
+
+.a-desp {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+}
+
+.a-desp a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0px;
+    margin: 10px 0px;
+    width: 350px;
+    text-align: center;
+    text-decoration: none;
+    margin-left: 8px;
+    border-radius: 30px 0px 0px 30px;
+}
+
+.a-desp a i {
+    width: 72px;
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    margin-right: 8px;
+}
+
+.a-desp a span {
+    width: 270px;
+    text-align: start;
+    padding-left: 15px;
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.a-desp a:hover {
+    background-color: white;
+}
+
+.a-desp a:hover i {
+    color: #2e0e36
+}
+
+.a-desp a:hover span {
+    color: #2e0e36
+}

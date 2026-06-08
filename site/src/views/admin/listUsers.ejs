@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../partials/head", { title: "Usuarios en database" }) %>
+
+
+
+  <body class="dashboard-body">
+    <%- include("./navBar") %>
+      <main class="admin-main-list">
+
+        <div class="admin-header-list">
+          
+          <div class="admin-header-list-title">
+
+            <h2>Usuarios</h2>
+
+          </div>
+        
+          </div>
+          
+          <table class="table table-hover table-borderless " id="table-users">
+            <thead class="table-dark">
+              <tr class="clickable-row" data-url="/admin/dashboard/usuarios/<%= users.id %>" >
+                <th scope="col"></th>
+                <th scope="col">Usuario</th>
+                <th scope="col">Email</th>
+                <th scope="col">Rol</th>
+                <th scope="col">Proveedor</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider">
+             
+              <% users.forEach(user=> { %>
+                <tr class="records">
+                  <td><img src="<%= /http/.test(user.avatar) ? user.avatar : '/images/users/' + user.avatar %>"  alt="" width="40px" height="40px" ></td>
+                  <td scope="row">
+                    <%= user.name %>  <%= user.surname %>
+                  </td>
+                  <td scope="row">
+                    <%= user.email %>
+                  </td>
+                  <td scope="row">
+                    <%= user.role.name %>
+                  </td>
+                  <td scope="row">
+               
+                      <%= user.provider ? user.provider : "Cuenta nativa" %></a>
+
+                  </td>
+                  <td scope="row">
+                    <a href="/admin/dashboard/usuarios/<%= user.id %>" class="btn btn-success">Detalles</a>
+                  </td>
+                
+               
+               
+              
+               
+                <% }) %>
+              </tr>
+
+          </tbody>
+        </table>
+
+      </main>
+
+
+      <%- include("../partials/scripts") %>
+
+  </body>
+
+</html>

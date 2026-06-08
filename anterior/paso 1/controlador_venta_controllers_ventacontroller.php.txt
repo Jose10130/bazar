@@ -1,0 +1,76 @@
+<?php
+require_once '../config/database.php';
+require_once '../models/Venta.php';
+require_once '../models/Carrito.php';
+// Nota: Se asume que FPDF está instalado en la carpeta vendor o libs
+require_once '../libs/fpdf/fpdf.php'; 
+
+class VentaController {
+    private $db;
+    private $venta;
+    private $carrito;
+
+    public function __construct() {
+        $database = new Database();
+        $this->db = $database->getConnection();
+        $this->venta = new Venta($this->db);
+        $this->carrito = new Carrito($this->db);
+    }
+
+    public function procesarCompra() {
+        if (session_status() == PHP_SESSION_NONE) session_start();
+        $usuario_id = $_SESSION['usuario_id'];
+
+        // Obtener items del carrito
+        $stmt = $this->carrito->obtenerPorUsuario($usuario_id);
+        $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (empty($items)) {
+            header("Location: carrito.php?error=carrito_vacio");
+            exit;
+        }
+
+        // Calcular total con lógica de descuentos (10% por bulto)
+        $total = 0;
+        $items_procesados = [];
+        foreach ($items as $item) {
+            $precio = $item['precio'];
+            if ($item['cantidad'] >= $item['minimo_bulto']) {
+                $precio = $precio * 0.9;
+            }
+            $total += $precio * $item['cantidad'];
+            
+            $items_procesados[] = [
+                'producto_id' => $item['producto_id'],
+                'cantidad' => $item['cantidad'],
+                'precio' => $precio,
+                'nombre' => $item['nombre']
+            ];
+        }
+
+        $this->venta->usuario_id = $usuario_id;
+        $this->venta->total = $total;
+
+        if ($this->venta->crear($items_procesados)) {
+            $this->carrito->vaciar($usuario_id);
+            header("Location: confirmacion.php?id=" . $this->venta->id);
+        } else {
+            header("Location: carrito.php?error=error_venta");
+        }
+    }
+
+    public function generarPDF($venta_id) {
+        // Lógica simplificada para generar PDF con FPDF
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial','B',16);
+        $pdf->Cell(40,10,'Comprobante de Venta #' . $venta_id);
+        $pdf->Ln(20);
+        
+        // Aquí iría la consulta a detalle_venta y la renderización de la tabla
+        // ...
+        
+        $pdf->Output('D', 'Comprobante_' . $venta_id . '.pdf');
+    }
+}
+?>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Producto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        /* Estilos generales */
+        .discount-badge {
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 5;
+        }
+        .promo-tag {
+            background-color: #e91e63;
+            color: white;
+            padding: 2px 8px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        /* --- LUPA FUNCIONAL --- */
+        #zoomTrigger { display: none; }
+        .zoom-label {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .overlay-close {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 998;
+            cursor: zoom-out;
+        }
+        .img-main { transition: transform 0.3s ease; }
+        #zoomTrigger:checked ~ .overlay-close { display: block; }
+        #zoomTrigger:checked ~ .row .product-column .img-main {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(1.2);
+            z-index: 999;
+            max-width: 90vw;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+        #zoomTrigger:checked ~ .row .product-column .zoom-label {
+            position: fixed; top: 20px; right: 20px;
+            z-index: 1000; background: #ff4757; color: white;
+        }
+
+        .footer-whatsapp {
+            position: fixed; bottom: 20px; left: 20px;
+            background-color: #25d366; color: white;
+            border-radius: 50%; width: 50px; height: 50px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px; z-index: 100;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <header class="border-bottom py-2 shadow-sm bg-white sticky-top">
+        <div class="container-fluid px-4 d-flex justify-content-between align-items-center">
+            
+            <button class="btn btn-link text-dark p-0 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
+                <i class="bi bi-list fs-2"></i>
+            </button>
+            
+            <div class="input-group w-50">
+                <input type="text" class="form-control border-end-0 text-center" placeholder="¿Qué buscas?">
+                <span class="input-group-text bg-white border-start-0"><i class="bi bi-search"></i></span>
+            </div>
+
+            <div class="d-flex gap-3 align-items-center">
+                <a href="#" class="btn btn-dark px-4 py-1 rounded-pill fw-bold" style="background-color: #1a237e; border:none;">Registrarse</a>
+                <div class="position-relative">
+                    <i class="bi bi-cart3 fs-3"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="menuLateral">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold">MENÚ</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action py-3">Inicio</a>
+                <a href="#" class="list-group-item list-group-item-action py-3">Categorías</a>
+                <a href="#" class="list-group-item list-group-item-action py-3">Mi Carrito</a>
+                <a href="#" class="list-group-item list-group-item-action py-3">Sucursales</a>
+                <a href="#" class="list-group-item list-group-item-action py-3">Contacto</a>
+                <a href="#" class="list-group-item list-group-item-action py-3 text-primary fw-bold">Atajos</a>
+            </div>
+        </div>
+    </div>
+
+    <main class="container my-5 flex-grow-1">
+        <input type="checkbox" id="zoomTrigger">
+        <label for="zoomTrigger" class="overlay-close"></label>
+
+        <div class="row">
+            <div class="col-md-6 position-relative product-column border rounded bg-white p-3 text-center">
+                <div class="discount-badge">-22%</div>
+                <label for="zoomTrigger" class="zoom-label"><i class="bi bi-search"></i></label>
+                <img src="https://m.media-amazon.com/images/I/71uIj+pZFdL._AC_SX425_.jpg" class="img-fluid rounded img-main" alt="Producto">
+            </div>
+
+            <div class="col-md-6 ps-md-5">
+                <p class="text-info mb-1">Bijouterie</p>
+                <h1 class="h2 fw-bold text-uppercase">Anteojos de moda los más vendidos</h1>
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="text-muted text-decoration-line-through fs-5">$ 4999</span>
+                    <span class="h2 fw-bold mb-0">$ 3899</span>
+                </div>
+                <div class="promo-tag small">Ahorra $1100 x Unidad</div>
+                <div class="d-flex align-items-center gap-2 mb-4 mt-3">
+                    <div class="input-group w-25">
+                        <button class="btn btn-outline-secondary">-</button>
+                        <input type="text" class="form-control text-center" value="1">
+                        <button class="btn btn-outline-secondary">+</button>
+                    </div>
+                    <button class="btn btn-primary w-100 fw-bold py-2">Agregar al carrito</button>
+                </div>
+                <div class="alert alert-light border small">
+                    <p class="fw-bold mb-2">¡Envio gratis en pedidos superiores a $100.000!</p>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-1"><i class="bi bi-check-circle-fill text-success me-2"></i> Descuentos por Bulto</li>
+                        <li class="mb-1"><i class="bi bi-check-circle-fill text-success me-2"></i> Importación Directo</li>
+                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> Envío a Todo el País</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-3 border-top text-center text-muted bg-light">
+        <p class="mb-0 small">© 2026 Tu Tienda de Moda</p>
+    </footer>
+
+    <a href="#" class="footer-whatsapp"><i class="bi bi-whatsapp"></i></a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

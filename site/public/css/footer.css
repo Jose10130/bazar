@@ -1,0 +1,202 @@
+/* =========================
+   FOOTER PRINCIPAL
+========================= */
+
+.footer-section {
+  background: linear-gradient(
+    180deg,
+    #f8d3e1 0%,
+    #efb7cf 50%,
+    #e18db5 100%
+  );
+  color: #3d2d38;
+  position: relative;
+  overflow: hidden;
+  margin-top: 0;
+}
+
+/* =========================
+   CONTENIDO
+========================= */
+
+.footer-content {
+  border-radius: 40px 40px 0 0;
+  padding: 34px 0 22px;
+  background: linear-gradient(
+    180deg,
+    #f2c4d8 0%,
+    #e8a6c3 100%
+  );
+}
+
+/* =========================
+   LOGO
+========================= */
+
+.footer-logo img {
+  max-width: 180px;
+  border-radius: 16px;
+}
+
+/* =========================
+   TEXTO
+========================= */
+
+.footer-text p {
+  margin-bottom: 14px;
+  font-size: 15px;
+  color: #3d2d38;
+  line-height: 1.7;
+}
+
+/* =========================
+   TITULOS
+========================= */
+
+.footer-widget-heading h3 {
+  color: #5a2341;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.footer-widget-heading h3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 55px;
+  height: 3px;
+  background: #e83e8c;
+  border-radius: 20px;
+}
+
+/* =========================
+   REDES SOCIALES
+========================= */
+
+.footer-social-icon span {
+  color: #5a2341;
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.footer-social-icon a {
+  color: #fff;
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.facebook-bg {
+  background: #4267b2;
+}
+
+.twitter-bg {
+  background: #1da1f2;
+}
+
+.google-bg {
+  background: #dd4b39;
+}
+
+.footer-social-icon i {
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 50%;
+}
+
+/* =========================
+   LINKS
+========================= */
+
+.footer-widget ul li {
+  margin-bottom: 12px;
+}
+
+.footer-widget ul li a {
+  color: #4a3a43;
+  text-decoration: none;
+  transition: .3s;
+}
+
+.footer-widget ul li a:hover {
+  color: #d63384;
+}
+
+/* =========================
+   NEWSLETTER
+========================= */
+
+.subscribe-form {
+  position: relative;
+  overflow: hidden;
+}
+
+.subscribe-form input {
+  width: 100%;
+  padding: 14px 20px;
+  background: #fff;
+  border: 2px solid #e56aa6;
+  border-radius: 12px;
+  color: #333;
+}
+
+.subscribe-form button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 60px;
+  border: none;
+  cursor: pointer;
+  background: #ffd600;
+  color: #000;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 0 12px 12px 0;
+}
+
+/* =========================
+   COPYRIGHT
+========================= */
+
+.copyright-area {
+  background: rgba(255,255,255,.25);
+  padding: 16px 0;
+  border-top: 1px solid rgba(90,35,65,.15);
+}
+
+.copyright-text p {
+  margin: 0;
+  color: #4d3b45;
+  font-size: 14px;
+}
+
+.copyright-text a {
+  color: #d63384;
+  text-decoration: none;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+  .footer-content {
+    border-radius: 20px 20px 0 0;
+    padding: 25px 15px;
+  }
+
+  .footer-widget-heading h3 {
+    font-size: 20px;
+  }
+
+  .footer-logo img {
+    max-width: 140px;
+  }
+}

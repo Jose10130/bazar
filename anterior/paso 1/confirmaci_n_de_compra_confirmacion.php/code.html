@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Confirmación de Compra - BazarAdmin</title>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#410004",
+                        "on-primary": "#ffffff",
+                        "outline": "#75777d",
+                        "tertiary-fixed-dim": "#ffb3ad",
+                        "tertiary-container": "#5a0008",
+                        "surface-tint": "#545f73",
+                        "secondary-fixed-dim": "#4edea3",
+                        "secondary": "#006c49",
+                        "tertiary-fixed": "#ffdad7",
+                        "primary-container": "#1e293b",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#ff5250",
+                        "on-surface": "#191c1e",
+                        "on-primary-fixed": "#111c2d",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#330002",
+                        "background": "#f7f9fb",
+                        "primary-fixed-dim": "#bcc7de",
+                        "on-primary-fixed-variant": "#3c475a",
+                        "surface-container": "#eceef0",
+                        "secondary-fixed": "#6ffbbe",
+                        "inverse-surface": "#2d3133",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#c5c6cd",
+                        "on-error-container": "#93000a",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#d8dadc",
+                        "surface-variant": "#e0e3e5",
+                        "on-background": "#191c1e",
+                        "surface-bright": "#f7f9fb",
+                        "primary": "#091426",
+                        "primary-fixed": "#d8e3fb",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#00714d",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-tertiary-fixed-variant": "#930013",
+                        "inverse-primary": "#bcc7de",
+                        "on-secondary-fixed-variant": "#005236",
+                        "surface-container-high": "#e6e8ea",
+                        "on-primary-container": "#8590a6",
+                        "on-secondary-fixed": "#002113",
+                        "surface-container-low": "#f2f4f6",
+                        "secondary-container": "#6cf8bb",
+                        "surface": "#f7f9fb",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-surface-variant": "#45474c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "1.5rem",
+                        "mobile-margin": "1rem",
+                        "card-padding": "1.5rem",
+                        "container-margin": "2rem",
+                        "section-gap": "2rem"
+                    },
+                    "fontFamily": {
+                        "headline-xl-mobile": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-xl-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-xl": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background min-h-screen flex items-center justify-center px-mobile-margin py-section-gap font-body-md text-on-background">
+<!-- Main Success Card Canvas -->
+<main class="w-full max-w-[480px] bg-surface rounded-xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),0_2px_4px_-1px_rgba(0,0,0,0.06)] flex flex-col items-center p-8 text-center">
+<!-- Success Icon -->
+<div class="mb-6 flex justify-center">
+<span class="material-symbols-outlined text-[80px] text-secondary" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<!-- Headline & Subtitle -->
+<h1 class="font-headline-xl text-headline-xl text-on-surface mb-2">¡Pedido Confirmado!</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8">La transacción se ha completado exitosamente y el registro ha sido guardado.</p>
+<!-- Transaction Summary Box -->
+<div class="w-full bg-surface-container-low rounded-lg p-6 mb-8 flex flex-col gap-6 text-left border border-outline-variant/30">
+<div class="flex justify-between items-center border-b border-outline-variant/40 pb-4">
+<div class="flex flex-col gap-1">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">ID de Venta</span>
+<span class="font-headline-md text-headline-md text-on-surface">#1024</span>
+</div>
+<div class="flex flex-col gap-1 items-end">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Fecha</span>
+<span class="font-body-md text-body-md text-on-surface">26 Oct, 2023</span>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-lg text-body-lg text-on-surface font-semibold">Total Pagado</span>
+<span class="font-headline-lg text-headline-lg text-secondary">$3,450.00</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="w-full flex flex-col gap-4">
+<!-- Download Button -->
+<button class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg border border-outline-variant bg-surface hover:bg-surface-container-high transition-colors duration-200">
+<span class="material-symbols-outlined text-on-surface" data-icon="download">download</span>
+<span class="font-label-md text-label-md text-on-surface">Descargar Comprobante PDF</span>
+</button>
+<!-- Return Button -->
+<button class="w-full flex items-center justify-center py-3 px-4 rounded-lg bg-primary hover:opacity-90 transition-opacity duration-200 shadow-sm">
+<span class="font-label-md text-label-md text-on-primary">Volver a la Tienda</span>
+</button>
+</div>
+</main>
+</body></html>

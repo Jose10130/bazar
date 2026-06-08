@@ -1,0 +1,42 @@
+[
+   {
+      "id": 1,
+      "active": true,
+      "street": "San Martín",
+      "streetNo": 123,
+      "city": "Mendoza",
+      "province": "Mendoza",
+      "zipCode": 5500,
+      "country": "Argentina"
+   },
+   {
+      "id": 2,
+      "active": true,
+      "street": "Belgrano",
+      "streetNo": 456,
+      "city": "Guaymallén",
+      "province": "Mendoza",
+      "zipCode": 5521,
+      "country": "Argentina"
+   },
+   {
+      "id": 3,
+      "active": true,
+      "street": "Colón",
+      "streetNo": 789,
+      "city": "Godoy Cruz",
+      "province": "Mendoza",
+      "zipCode": 5501,
+      "country": "Argentina"
+   },
+   {
+      "id": 4,
+      "active": true,
+      "street": "Las Heras",
+      "streetNo": 321,
+      "city": "Luján de Cuyo",
+      "province": "Mendoza",
+      "zipCode": 5507,
+      "country": "Argentina"
+   }
+]

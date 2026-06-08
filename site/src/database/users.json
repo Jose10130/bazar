@@ -1,0 +1,30 @@
+[
+   {
+      "id": 1,
+      "name": "Jose",
+      "surname": "Diaz",
+      "email": "jose@gmail.com",
+      "password": "$2a$12$ozNwn3ErV/sl7bcoo0p.zeI3vBJWJ1dAyqWAmwBvPK0M4tjjCDOMC",
+      "avatar": "avatar-default.png",
+      "roleId": 1,
+      "addressId": 2,
+      "dni": 40111222,
+      "phoneNumber": "11-43219876",
+      "favourites": [
+         24
+      ]
+   },
+   {
+      "id": 2,
+      "name": "Admin",
+      "surname": "ADMIN",
+      "email": "admin.acount@gmail.com",
+      "password": "$2a$12$ozNwn3ErV/sl7bcoo0p.zeI3vBJWJ1dAyqWAmwBvPK0M4tjjCDOMC",
+      "avatar": "1715713309762- user -999728454.jpg",
+      "roleId": 2,
+      "addressId": 4,
+      "dni": 40111222,
+      "phoneNumber": "11-43219876",
+      "favourites": []
+   }
+]

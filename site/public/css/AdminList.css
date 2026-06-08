@@ -1,0 +1,141 @@
+.toUpperCase{
+    text-transform: uppercase
+}
+
+.admin-container-inputs {
+  
+   display: flex;
+   gap:20px
+
+}
+.admin-container-inputs button{
+    
+    width:150px;
+    font-size: 15px;
+
+}
+
+#dt-search-0{
+    background-color:whitesmoke
+}
+
+#table-users{
+    display: block;
+}
+
+
+
+.dt-paging-button{
+    width: 300px;
+
+}
+
+
+
+.admin-main-list {
+    font-family: "roboto, sans-serif";
+    padding: 30px;
+    padding-left: 108px;
+}
+.admin-container-inputs{
+    display: flex;
+}
+#table-search-admin th,
+#table-search-admin td {
+    width: 300px;
+}
+
+
+
+#table-search-admin tr {
+    height: 50px;
+    cursor: pointer;
+    
+}
+
+#table-search-admin {
+
+    border-radius: 20px;
+}
+
+#input-search-admin {
+    background-image: url('/images/lupa.png'); 
+    background-size: 26px;
+    background-position: 4px, 20px;
+    background-repeat: no-repeat; 
+    width: 300px; 
+    font-size: 16px; 
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd; 
+    margin-bottom: 12px; 
+    margin-right: 20px;
+    margin-top:5px;
+    border-radius: 13px;
+  }
+#table-search-admin td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.admin-header-list {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-radius: 9px
+}
+
+.admin-header-list svg {
+    width: 50px;
+    height: 30px;
+}
+
+.admin-header-list-title {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 11px solid rgb(136, 136, 136); 
+    padding-left: 12px;
+    height: 40px;
+    margin-left: 20px;
+}
+
+.admin-header-list h2 {
+    margin-top: 8px;
+    font-weight: 900;
+    font-size:40px;
+    
+    
+}
+
+.admin-table-list {
+    width: 80%;
+    margin: auto;
+    border-collapse: collapse;
+    text-align: center;
+    overflow-y: scroll;
+    display: block;
+    height: calc(100vh - 270px);
+}
+
+.admin-table-list thead th {
+    font-size: medium;
+    background-color: rgb(185, 180, 180);
+}
+
+.admin-table-list th {
+    height: 50px;
+  
+    padding: 19px;
+    border-bottom: 1px solid lightgray;
+}
+
+.admin-table-list td {
+    border-bottom: 1px solid lightgray;
+}
+
+.admin-table-list .records:hover {
+    background-color: rgb(223, 220, 219);
+}

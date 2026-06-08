@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<%- include("../partials/head", {title: product.name}) %>
+
+    <body>
+        <%- include("../partials/header") %>
+
+
+            <main class="detail-main">
+                <div class="detail-container">
+                    <nav class="nav-categories">
+                        <a id="backButton"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+                        <div>
+                            <a href="/">Home <i class="fa-solid fa-chevron-right"></i></a>
+                            <a href="/productos/categoria/<%=product.categoryId %>">
+                                <%= product.category.name %> <i class="fa-solid fa-chevron-right"></i>
+                            </a>
+                        </div>
+                    </nav>
+                    <div class="product-img-container">
+                        <div class="images-gallery">
+                            <img id="galeria" src="/images/products/<%= product.image %>" alt="">
+                            <nav class="nav-gallery">
+                                <ul>
+                                    <li><a onclick="cargarfoto('/images/products/<%= product.image %>')"><img
+                                                src="/images/products/<%= product.image %>" alt=""></a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="info-product">
+                            <div>
+                                <h2>
+                                    <%= product.name %>
+                                </h2>
+                                <h2>$ <%= product.price %>
+                                </h2>
+                            </div>
+                            <div class="sub-info-product">
+                                <span>Envio a todo el Pais  <i class="fa-solid fa-truck"></i></span>
+                                <span class="textGray">Conocé los tiempos y metodos de envio</span>
+                                <span class="textBlue">Calcular cuándo llega</span>
+                                <span class="textBoldd">Stock disponible</span>
+                            </div>
+                            <div>
+                                <button class="cart-button" id="comprarButton">Comprar ahora</button>
+                                <button class="cart-button" id="addCartButton">Agregaral carrito <i
+                                        class="fa-solid fa-cart-shopping"></i></button>
+                            </div>
+                            <!-- <h2>
+                                <%= product.name %>
+                            </h2>
+                            <h2>$ <%= product.price %>
+                            </h2>
+                            <button class="cart-button" >Agregar al carrito <i
+                                    class="fa-solid fa-cart-shopping"></i></button> -->
+                        </div>
+                        <span class="product-description-detail">
+                            <h2>Descripcion del producto</h2>
+                            <p>
+                                <%= product.description %>
+                            </p>
+                        </span>
+                    </div>
+                    <div class="carouselBottom">
+                    </div>
+                </div>
+
+
+                <div class="carousel-container">
+                    <div class="swiper mySwiper">
+                        <div class="swiper-wrapper">
+                            <% productsBotBar.forEach(prodBotBar=> { %>
+                                <div class="swiper-slide">
+                                    <div class="clean-product-swiper">
+                                        <div class="img-container-swiper">
+                                            <a href="/productos/detalle/<%= prodBotBar.id%>">
+                                                <img src="/images/products/<%= prodBotBar.image%>" alt="Article">
+                                            </a>
+                                        </div>
+                                        <div class="description-container-swiper">
+                                            <h2>
+                                                <%= prodBotBar.name%>
+                                            </h2>
+                                            <h3> $<%= prodBotBar.price%>
+                                            </h3>
+                                            <a id="cart-action-swiper" href="/productos/detalle/<%= prodBotBar.id%>">Ver
+                                                Producto</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% }) %>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+
+                <!-- Swiper JS -->
+                <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+                <!-- Initialize Swiper -->
+                <script>
+                    var swiper = new Swiper(".mySwiper", {
+                        slidesPerView: 1,
+                        spaceBetween: 10,
+                        pagination: {
+                            el: ".swiper-pagination",
+                            clickable: true,
+                        },
+                        breakpoints: {
+                            426: {
+                                slidesPerView: 1,
+                                spaceBetween: 0,
+                            },
+                            769: {
+                                slidesPerView: 2,
+                                spaceBetween: 0,
+                            },
+                            1024: {
+                                slidesPerView: 4,
+                                spaceBetween: 0,
+                            }
+                        }
+                    });
+                </script>
+                <script>
+                    document.getElementById('backButton').addEventListener('click', function () {
+                        window.history.back()
+                    })
+
+                    document.getElementById('comprarButton').addEventListener('click', function () {
+                        alert("Producto Comprado")
+                    })
+                    document.getElementById('addCartButton').addEventListener('click', function () {
+                        alert("Producto agregado al carrito")
+                    })
+                    function cargarfoto(img) {
+                        document.getElementById("galeria").src = img;
+                    }
+                </script>
+            </main>
+            <%- include("../partials/footer") %>
+                <%- include("../partials/scripts") %>
+    </body>
+
+</html>
