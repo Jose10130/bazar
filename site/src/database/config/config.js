@@ -1,11 +1,18 @@
 module.exports = {
-"development": {
+  "development": {
+    "use_env_variable": "DATABASE_URL",
     "username": "bazar_db_s472_user",
     "password": "zK1Y6SQY9pLd0br3LzhuKisHnPQOqTho",
-    "database": "bazar_db_s472", // O el nombre que te dé Aiven
-    "host": "postgresql://bazar_db_s472_user:zK1Y6SQY9pLd0br3LzhuKisHnPQOqTho@dpg-d8j65448aovs738vo150-a/bazar_db_s472",
-    "port": 10928, // El puerto que te dé Aiven (suele cambiar en la nube)
-    "dialect": "mysql"
+    "database": "bazar_db_s472",
+    "host": "dpg-d8j65448aovs738vo150-a.oregon-postgres.render.com",
+    "port": 5432,
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   },
   "test": {
     "username": "root",
