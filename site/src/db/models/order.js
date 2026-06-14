@@ -18,34 +18,26 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
 
-  Order.init({
-    total: {
-      type: DataTypes.DOUBLE,
-      defaultValue: 0
-    },
+    Order.init({
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    total: {
+      type: DataTypes.DOUBLE,
+      allowNull: true
+    },
     state: {
       type: DataTypes.STRING,
-      validate: {
-        isIn: {
-          args: [['completed', 'pending', 'canceled']],
-          msg: "Los valores validos de estado son 'completed', 'pending' o 'canceled'"
-        }
-      },
-      defaultValue: 'pending'
-    },
-    stockDiscounted: {
-      type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: false
+      defaultValue: 'pending',
+      validate: {
+        isIn: [['pending', 'completed', 'canceled']]
+      }
     }
   }, {
     sequelize,
     modelName: 'Order',
-    paranoid: true
   });
 
   return Order;
