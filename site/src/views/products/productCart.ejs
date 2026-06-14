@@ -1,67 +1,313 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+<%- include("../partials/head", { title: "Tu carrito" }) %>
 
+<body class="cart-page">
+  <%- include("../partials/header") %>
 
-<%- include("../partials/head") %>
+  <main class="cart-page__main container">
+    <%
+      const products = (order && (order.products || order.Products)) ? (order.products || order.Products) : [];
+      const orderId = order ? order.id : '—';
 
-    <body>
-        <%- include("../partials/header") %>
+      const getQuantity = (product) => Number(
+        product?.Orderproducts?.quantity ??
+        product?.Orderproducts?.dataValues?.quantity ??
+        product?.Orderproduct?.quantity ??
+        product?.Orderproduct?.dataValues?.quantity ??
+        product?.orderProducts?.quantity ??
+        product?.orderProducts?.dataValues?.quantity ??
+        product?.dataValues?.Orderproducts?.quantity ??
+        product?.dataValues?.Orderproducts?.dataValues?.quantity ??
+        0
+      ) || 0;
 
-            <main class="main">
-                <h1>Tu Carrito</h1>
-                <form id="formulario_pago">
+      const formatMoney = (value) =>
+        Number(value || 0).toLocaleString('es-AR', {
+          style: 'currency',
+          currency: 'ARS'
+        });
 
-                    <label for="numero-tarjeta">Número de la Tarjeta:</label>
-                    <input type="text" id="numero-tarjeta" name="numero-tarjeta" required>
+      const getImageSrc = (product) => {
+        if (!product || !product.image) return '';
+        if (product.image.startsWith('http')) return product.image;
+        return '/images/products/' + product.image;
+      };
 
-                    <label for="vencimiento">Vencimiento:</label>
-                    <input type="date" id="vencimiento" name="vencimiento" required>
+      const getSubtotal = (product) => Number(product?.price || 0) * getQuantity(product);
+      const orderTotal = Number(order && order.total ? order.total : products.reduce((acc, product) => acc + getSubtotal(product), 0));
+      const customerName = [user && user.name ? user.name : '', user && user.surname ? user.surname : '']
+        .filter(Boolean)
+        .join(' ');
+    %>
 
-                    <label for="caa">CAA:</label>
-                    <input type="number" id="caa" name="caa" required>
+    <section class="cart-hero">
+      <div class="cart-hero__content">
+        <p class="cart-hero__eyebrow">Revisá tu compra</p>
+        <h1 class="cart-hero__title">Tu carrito</h1>
+        <p class="cart-hero__subtitle">
+          Confirmá tus productos, completá tus datos y elegí cómo finalizar la compra.
+        </p>
+      </div>
 
-                    <label for="nombre-tarjeta">Nombre en la Tarjeta:</label>
-                    <input type="text" id="nombre-tarjeta" name="nombre-tarjeta" required>
+      <div class="cart-hero__order">
+        <span class="cart-hero__label">N° de orden</span>
+        <strong class="cart-hero__value"><%= orderId %></strong>
+      </div>
+    </section>
 
-                    <label for="numero-dni">Número de DNI:</label>
-                    <input type="number" id="numero-dni" name="numero-dni" required>
+    <div class="row g-4 align-items-start">
+      <div class="col-12 col-lg-8">
+        <section class="cart-card cart-card--items">
+          <div class="cart-card__header">
+            <div>
+              <h2 class="cart-card__title">Productos</h2>
+              <p class="cart-card__text">Podés modificar cantidades o eliminar productos sin perder la lógica actual.</p>
+            </div>
+            <div class="cart-card__badge">
+              <span><%= products.length %></span>
+              <small>items</small>
+            </div>
+          </div>
 
-                    <label for="numero-celular">Número de Celular:</label>
-                    <input type="tel" id="numero-celular" name="numero-celular" required>
+          <% if (products.length > 0) { %>
+            <div class="cart-items-list">
+              <% products.forEach(function(product) {
+                const quantity = getQuantity(product);
+                const price = Number(product?.price || 0);
+                const subtotal = price * quantity;
+                const productImage = getImageSrc(product);
+              %>
+                <article
+                  class="cart-item"
+                  data-product-id="<%= product.id %>"
+                  data-product-name="<%= product.name %>"
+                  data-product-price="<%= price %>"
+                  data-product-qty="<%= quantity %>"
+                  data-product-subtotal="<%= subtotal %>">
 
-                    <label for="correo-electronico">Correo Electrónico:</label>
-                    <input type="email" id="correo-electronico" name="correo-electronico" required>
+                  <div class="cart-item__image">
+                    <% if (productImage) { %>
+                      <img src="<%= productImage %>" alt="<%= product.name %>">
+                    <% } else { %>
+                      <div class="cart-item__placeholder">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                      </div>
+                    <% } %>
+                  </div>
 
-                </form>
-
-                <div class="total_a_pagar">
-                    <div id="numero_de_orden">
-                        <p>N° de orden: <%= order.id %> </p>
-
+                  <div class="cart-item__content">
+                    <div class="cart-item__top">
+                      <h3 class="cart-item__name"><%= product.name %></h3>
+                      <p class="cart-item__price">
+                        Precio unitario:
+                        <strong><%= formatMoney(price) %></strong>
+                      </p>
                     </div>
 
+                    <div class="cart-item__meta">
+                      <div class="cart-item__quantity-box">
+                        <span class="cart-item__meta-label">Cantidad</span>
 
-                    <label>Total a Pagar:</label>
-                    <p id="total_a_pagar_numero">$100.00</p>
-                    <button type="submit"><i class="fa-solid fa-arrow-right"></i>Pagar</button>
+                        <div class="qty-stepper" aria-label="Control de cantidad">
+                          <button
+                            type="button"
+                            class="less-quantity qty-stepper__btn"
+                            data-product-id="<%= product.id %>"
+                            aria-label="Disminuir cantidad">
+                            −
+                          </button>
+
+                          <span class="qty-stepper__value"><%= quantity %></span>
+
+                          <button
+                            type="button"
+                            class="more-quantity qty-stepper__btn"
+                            data-product-id="<%= product.id %>"
+                            aria-label="Aumentar cantidad">
+                            +
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="cart-item__subtotal-box">
+                        <span class="cart-item__meta-label">Subtotal</span>
+                        <strong class="cart-item__subtotal"><%= formatMoney(subtotal) %></strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="cart-item__actions">
+                    <button
+                      type="button"
+                      class="remove-from-cart cart-item__remove"
+                      data-product-id="<%= product.id %>">
+                      Eliminar
+                    </button>
+                  </div>
+                </article>
+              <% }) %>
+            </div>
+          <% } else { %>
+            <div class="cart-empty">
+              <div class="cart-empty__icon">
+                <i class="fa-solid fa-cart-shopping"></i>
+              </div>
+              <h3>Tu carrito está vacío</h3>
+              <p>Agregá productos para verlos acá y poder finalizar la compra.</p>
+            </div>
+          <% } %>
+        </section>
+      </div>
+
+      <div class="col-12 col-lg-4">
+        <aside class="checkout-panel">
+          <section class="checkout-card">
+            <div class="checkout-card__header checkout-card__header--stack">
+              <div>
+                <h2 class="checkout-card__title">Datos de clientes</h2>
+                <p class="checkout-card__text">Estos datos se usarán para WhatsApp.</p>
+              </div>
+            </div>
+
+            <form id="formulario_pago" class="checkout-form" novalidate>
+              <div class="field-grid field-grid--one">
+                <div class="field">
+                  <label for="numero-dni" class="field__label">DNI</label>
+                  <input
+                    type="text"
+                    id="numero-dni"
+                    name="numero-dni"
+                    class="form-control cart-input"
+                    value="<%= user && user.dni ? user.dni : '' %>"
+                    placeholder="Ingresá tu DNI"
+                    required>
                 </div>
 
+                <div class="field">
+                  <label for="numero-celular" class="field__label">Celular</label>
+                  <input
+                    type="tel"
+                    id="numero-celular"
+                    name="numero-celular"
+                    class="form-control cart-input"
+                    value="<%= user && user.phoneNumber ? user.phoneNumber : '' %>"
+                    placeholder="Ej: 2645xxxxxx"
+                    required>
+                </div>
 
+                <div class="field">
+                  <label for="correo-electronico" class="field__label">Correo electrónico</label>
+                  <input
+                    type="email"
+                    id="correo-electronico"
+                    name="correo-electronico"
+                    class="form-control cart-input"
+                    value="<%= user && user.email ? user.email : '' %>"
+                    placeholder="tucorreo@email.com"
+                    required>
+                </div>
+              </div>
 
+              <% if (customerName) { %>
+                <div class="customer-pill">
+                  <span>Cliente cargado:</span>
+                  <strong><%= customerName %></strong>
+                </div>
+              <% } %>
+            </form>
+          </section>
 
-            </main>
+          <section class="checkout-card">
+            <div class="checkout-card__header checkout-card__header--stack">
+              <div>
+                <h2 class="checkout-card__title">Mercado Pago</h2>
+              </div>
+            </div>
 
+            <div class="field-grid field-grid--two">
+              <div class="field">
+                <label for="numero-tarjeta" class="field__label">Número de tarjeta</label>
+                <input
+                  type="text"
+                  id="numero-tarjeta"
+                  name="numero-tarjeta"
+                  class="form-control cart-input"
+                  placeholder="XXXX XXXX XXXX XXXX">
+              </div>
 
-            <!-- Footer -->
+              <div class="field">
+                <label for="vencimiento" class="field__label">Vencimiento</label>
+                <input
+                  type="month"
+                  id="vencimiento"
+                  name="vencimiento"
+                  class="form-control cart-input">
+              </div>
 
-            <%- include("../partials/footer") %>
+              <div class="field">
+                <label for="caa" class="field__label">CVC / CAA</label>
+                <input
+                  type="text"
+                  id="caa"
+                  name="caa"
+                  class="form-control cart-input"
+                  placeholder="123">
+              </div>
 
+              <div class="field">
+                <label for="nombre-tarjeta" class="field__label">Nombre en la tarjeta</label>
+                <input
+                  type="text"
+                  id="nombre-tarjeta"
+                  name="nombre-tarjeta"
+                  class="form-control cart-input"
+                  placeholder="Como figura en la tarjeta">
+              </div>
+            </div>
 
+            <button type="button" class="btn btn-mp" id="btn-mercadopago" disabled>
+              <i class="fa-brands fa-cc-mastercard"></i>
+              Pagar con Mercado Pago
+            </button>
+          </section>
 
-                <!-- Scripts -->
+          <section class="checkout-card checkout-card--summary">
+            <div class="checkout-card__header checkout-card__header--stack">
+              <div>
+                <h2 class="checkout-card__title">Resumen de compra</h2>
+                <p class="checkout-card__text">El total general se completa automáticamente.</p>
+              </div>
+            </div>
 
-                <%- include("../partials/scripts") %>
-    </body>
+            <div class="summary-box">
+              <div class="summary-row">
+                <span>Productos</span>
+                <strong><%= products.length %></strong>
+              </div>
 
+              <div class="summary-row">
+                <span>N° de orden</span>
+                <strong><%= orderId %></strong>
+              </div>
 
+              <div class="summary-row summary-row--total" data-order-total="<%= orderTotal %>">
+                <span>Total a pagar</span>
+                <strong class="summary-total"><%= formatMoney(orderTotal) %></strong>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-whatsapp" id="btn-whatsapp">
+              <i class="fa-brands fa-whatsapp"></i>
+              Enviar pedido por WhatsApp
+            </button>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <%- include("../partials/footer") %>
+  <%- include("../partials/scripts") %>
+</body>
 </html>

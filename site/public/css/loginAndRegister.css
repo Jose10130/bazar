@@ -10,8 +10,17 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background: rgb(49, 94, 138);
-  background: linear-gradient(143deg, rgba(49, 94, 138, 1) 11%, rgba(56, 117, 176, 1) 17%, rgba(48, 90, 132, 1) 42%, rgba(59, 126, 192, 1) 45%, rgba(44, 79, 114, 1) 53%, rgba(57, 120, 182, 1) 76%, rgba(44, 79, 114, 1) 83%);
+  background: rgb(184, 38, 38);
+  background: linear-gradient(
+  143deg,
+  #e96ca4 11%,
+  #f08eb6 17%,
+  #d85b90 42%,
+  #f79fc0 45%,
+  #b84a78 53%,
+  #f298b8 76%,
+  #c95285 83%
+);
 }
 
 .container-form {

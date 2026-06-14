@@ -1,49 +1,55 @@
-const { Op } = require('sequelize')
-const db = require("../../db/models")
-const { getOrderPending } = require("./utility/")
+const db = require('../../db/models');
+const { getOrderPending } = require('./utility');
+
+const getQuantity = (product) => Number(
+  (product && product.Orderproducts && product.Orderproducts.quantity) ||
+  (product && product.Orderproducts && product.Orderproducts.dataValues && product.Orderproducts.dataValues.quantity) ||
+  (product && product.Orderproduct && product.Orderproduct.quantity) ||
+  (product && product.Orderproduct && product.Orderproduct.dataValues && product.Orderproduct.dataValues.quantity) ||
+  (product && product.orderProducts && product.orderProducts.quantity) ||
+  (product && product.orderProducts && product.orderProducts.dataValues && product.orderProducts.dataValues.quantity) ||
+  (product && product.dataValues && product.dataValues.Orderproducts && product.dataValues.Orderproducts.quantity) ||
+  (product && product.dataValues && product.dataValues.Orderproducts && product.dataValues.Orderproducts.dataValues && product.dataValues.Orderproducts.dataValues.quantity) ||
+  0
+) || 0;
+
+const getTotalOrder = (products = []) => {
+  return products.reduce((acc, product) => {
+    const price = Number(product && product.price ? product.price : 0);
+    const quantity = getQuantity(product);
+    return acc + (price * quantity);
+  }, 0);
+};
 
 module.exports = async (req, res) => {
+  try {
+    const [order, isCreate] = await getOrderPending(req);
 
-    try {
-
-        const [order, isCreate] = await getOrderPending(req)
-
-        let total = 0;
-
-        order.products.forEach((product) => {
-            const price = product.dataValues.price
-            const quantity = product.dataValues.Orderproducts.dataValues.quantity
-            total += price * quantity
+    const orderWithProducts = await order.reload({
+      include: [
+        {
+          association: 'products',
+          through: {
+            attributes: ['quantity']
+          }
         }
-        );
+      ]
+    });
 
-        order.total = total
-        await order.save()
+    orderWithProducts.total = getTotalOrder(orderWithProducts.products || []);
+    await orderWithProducts.save();
 
-        const statusCode = isCreate ? 201 : 200
-        res.status(statusCode).json({
-            ok: true,
-            isCreate: isCreate,
-            data: await order.reload({
-                include: [
-                    {
-                        association: "products",
-                        through: {
-                            attributes: ["quantity"]
-                        }
-                    }
-                ]
-            })
-        })
+    const statusCode = isCreate ? 201 : 200;
 
-
-
-
-    } catch (error) {
-        res.status(500).json({
-            ok: false,
-            msg: error.message
-        })
-    }
-
-}
+    return res.status(statusCode).json({
+      ok: true,
+      isCreate,
+      data: orderWithProducts
+    });
+  } catch (error) {
+    return res.status(error.status || 500).json({
+      ok: false,
+      msg: error.message
+    });
+  }
+};

@@ -336,5 +336,82 @@
         border: solid 1px lightgray;
         overflow: hidden;
     }
+/*cambio aca de botones + y - */
+    /* Contenedor general de cantidad */
+.detail-qty {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espacio entre los elementos */
+  margin: 18px 0;
+}
+
+/* Botón restar (-) */
+.detail-quantity-minus {
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #e74c3c; /* Rojo suave */
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Botón restar deshabilitado */
+.detail-quantity-minus:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+  background-color: #f8f8f8;
+}
+
+/* Botón sumar (+) */
+.detail-quantity-plus {
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #2ecc71; /* Verde suave */
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Efecto al pasar el mouse */
+.detail-quantity-minus:hover:not(:disabled) {
+  background-color: #fdecea;
+  border-color: #e74c3c;
+}
+
+.detail-quantity-plus:hover {
+  background-color: #eafaf1;
+  border-color: #2ecc71;
+}
+
+/* Cuadro central con la cantidad */
+#detailQuantityValue {
+  width: 50px;
+  height: 50px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #ffffff; /* Fondo blanco */
+  color: #000000; /* Número en negro */
+  font-size: 18px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 }

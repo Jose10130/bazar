@@ -1,100 +1,206 @@
 <!DOCTYPE html>
-<html lang="en">
-<%- include("../partials/head", { title: "Productos en database" }) %>
+<html lang="es">
+<%- include("../partials/head", { title: "Detalle de orden" }) %>
 
+<body class="dashboard-body">
+  <%- include("./navBar") %>
 
+  <% 
+    const stateLabels = {
+      pending: "Pendiente",
+      completed: "Finalizado",
+      canceled: "Cancelado"
+    };
 
-    <body class="dashboard-body">
-        <%- include("./navBar") %>
-            <main class="admin-main-list">
-                <div class="admin-header-list">
-                    <div class="admin-header-list-title">
-                        <h3></h3>
-                        <h2>Detalle de orden</h2>
-                    </div>
-                </div>
+    const fullName = [
+      order?.user?.name || "",
+      order?.user?.surname || ""
+    ].join(" ").trim();
 
-            
-                    <br>
-                 
-                        
-                 
-                                  
-                 <br>
-          
-          
-                     
-                       
-                           
-                    <br>
-                    <br>
-                         
-                          
+    const subtotalValue = Number(order?.subtotal ?? order?.total ?? 0);
+    const totalValue = Number(order?.grandTotal ?? order?.total ?? 0);
+  %>
 
-<br><div class="container">
-    <div class="container">
-       
-           
-            
-                <h2>Orden N° <%= order.id %></h2>
-          
- 
-     
-        <div class="row">
-          <div class="col-md-12">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Imagen</th>
-                  <th>Nombre</th>
-                  <th>Cantidad</th>
-                  <th>Precio</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% order.products.forEach(product => { %>
-                  <tr>
-                    <td><img src="/images/products/<%= product.image %>" class="img-product-admin" alt="<%= product.name %>"></td>
-                    <td><%= product.name %></td>
-                    <td>
-                      <% const orderProduct = product.orderProducts; %>
-                      <% if (orderProduct) { %>
-                        <%= orderProduct.quantity %>
-                      <% } else { %>
-                        0
-                      <% } %>
-                    </td>
-                    <td><%= product.price.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' }) %></td>
-                  </tr>
-                <% }) %>
-              </tbody>
-            </table>
-          </div>
+  <main class="admin-main-list printable-order order-detail-page">
+    <div class="order-page-top no-print">
+      <div class="page-title-block">
+        <span class="page-title-accent"></span>
+        <div>
+          <p class="page-kicker">L Y L Aromas Nails</p>
+          <h1 class="page-title">Detalle de orden</h1>
         </div>
       </div>
-                          
-                
-          </div>      
-          
-          
-          <div class="card  <%= order.state === "pending" ? " text-bg-warning mb-3" : order.state === "completed" ? " text-bg-success mb-3" : "text-bg-secondary mb-3" %>" id="order-detail-head" style="width: 18rem;">
-              <div class="card-body">
-                <h5 class="card-title"> Estado : <%= order.state %></h5>
-                <h6 class="card-subtitle mb-2 "> Usuario: <%= order.user.name %> <%= order.user.surname %>  </h6>
-                <p class="card-text"></p>
-                <a href="#" class="card-link"></a>
-                <h2>Total : <%= order.total.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' }) %></h7>
-              </div>
-            </div>
-              
-          
-              
 
-            </main>
+      <div class="order-top-actions">
+        <button type="button" id="printReceiptBtn" class="btn btn-outline-dark order-action-btn">
+          Imprimir boleta
+        </button>
+        <a href="/admin/dashboard/ordenes" class="btn btn-outline-secondary order-action-btn">
+          Volver
+        </a>
+      </div>
+    </div>
 
+    <section class="order-header-card">
+      <div class="order-brand-block">
+        <img src="/images/logo.png" alt="L Y L Aromas Nails" class="order-brand-logo">
+        <div class="order-brand-text">
+          <p class="order-brand-name">L Y L Aromas Nails</p>
+          <h2 class="order-number">Orden N° <%= order.id %></h2>
 
-            <%- include("../partials/scripts") %>
+          <p class="order-meta-line">
+            <span class="meta-label">Usuario:</span>
+            <strong><%= fullName || "Sin usuario" %></strong>
+          </p>
 
-    </body>
+          <p class="order-meta-line">
+            <span class="meta-label">Estado:</span>
+            <span class="order-state-badge order-state-<%= order.state %>">
+              <%= stateLabels[order.state] || order.state %>
+            </span>
+          </p>
 
+          <p class="order-meta-line">
+            <span class="meta-label">Creada el:</span>
+            <strong><%= new Date(order.createdAt).toLocaleString("es-AR") %></strong>
+          </p>
+
+          <p class="order-meta-line">
+            <span class="meta-label">Última actualización:</span>
+            <strong><%= new Date(order.updatedAt).toLocaleString("es-AR") %></strong>
+          </p>
+        </div>
+      </div>
+
+      <div class="order-total-hero">
+        <span>Total</span>
+        <strong><%= Number(totalValue).toLocaleString("es-AR", { style: "currency", currency: "ARS" }) %></strong>
+      </div>
+    </section>
+
+    <section class="order-detail-layout">
+      <div class="order-items-card">
+        <div class="section-inline-title">
+          <h3>Productos de la orden</h3>
+          <span class="items-count"><%= order.products.length %> ítems</span>
+        </div>
+
+        <div class="table-responsive order-table-wrap">
+          <table class="table align-middle order-items-table">
+            <thead>
+              <tr>
+                <th>Imagen</th>
+                <th>Producto</th>
+                <th class="text-center">Código</th>
+                <th class="text-center">Cantidad</th>
+                <th class="text-end">Precio</th>
+                <th class="text-end">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% order.products.forEach(product => { 
+                const quantity = Number(product.quantity || 1);
+                const price = Number(product.price || 0);
+                const subtotal = Number(product.subtotal ?? (price * quantity));
+              %>
+                <tr>
+                  <td>
+                    <img
+                      src="/images/products/<%= product.image %>"
+                      class="img-product-admin"
+                      alt="<%= product.name %>">
+                  </td>
+                  <td>
+                    <strong><%= product.name %></strong>
+                  </td>
+                  <td class="text-center product-code">
+                    <%= product.barcode || ('PRD-' + String(product.id).padStart(8, '0')) %>
+                  </td>
+                  <td class="text-center">
+                    <span class="qty-pill"><%= quantity %></span>
+                  </td>
+                  <td class="text-end">
+                    <%= price.toLocaleString("es-AR", { style: "currency", currency: "ARS" }) %>
+                  </td>
+                  <td class="text-end">
+                    <%= subtotal.toLocaleString("es-AR", { style: "currency", currency: "ARS" }) %>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <aside class="order-summary-card">
+        <h3>Resumen</h3>
+
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <strong id="subtotalAmount" data-order-subtotal="<%= subtotalValue %>">
+            <%= Number(subtotalValue).toLocaleString("es-AR", { style: "currency", currency: "ARS" }) %>
+          </strong>
+        </div>
+
+        <div class="summary-row summary-discount">
+          <label for="discountPercent">Descuento (%)</label>
+          <div class="discount-inline">
+            <input
+              type="number"
+              id="discountPercent"
+              name="discountPercent"
+              min="0"
+              max="100"
+              step="1"
+              value="0"
+              class="form-control">
+            <button type="button" id="applyDiscountBtn" class="btn btn-outline-dark order-action-btn">
+              Aplicar
+            </button>
+          </div>
+        </div>
+
+        <div class="summary-row">
+          <span>Descuento</span>
+          <strong id="discountAmount">$ 0,00</strong>
+        </div>
+
+        <div class="summary-total">
+          <span>Total</span>
+          <strong id="grandTotal">
+            <%= Number(totalValue).toLocaleString("es-AR", { style: "currency", currency: "ARS" }) %>
+          </strong>
+        </div>
+
+        <div class="summary-actions no-print">
+          <form action="/admin/dashboard/ordenes/<%= order.id %>/estado?_method=PUT" method="post">
+            <input type="hidden" name="state" value="completed">
+            <button
+              type="submit"
+              class="btn btn-success order-action-btn"
+              <%= order.state === "completed" ? "disabled" : "" %>>
+              Finalizado
+            </button>
+          </form>
+
+          <form action="/admin/dashboard/ordenes/<%= order.id %>/estado?_method=PUT" method="post">
+            <input type="hidden" name="state" value="canceled">
+            <button
+              type="submit"
+              class="btn btn-danger order-action-btn"
+              <%= order.state === "canceled" ? "disabled" : "" %>>
+              Cancelar
+            </button>
+          </form>
+        </div>
+
+        <p class="summary-note no-print">
+          La boleta queda lista para imprimir desde el navegador o guardar como PDF.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <%- include("../partials/scripts") %>
+</body>
 </html>

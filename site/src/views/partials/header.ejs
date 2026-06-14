@@ -54,11 +54,12 @@
       <% } %>
 
       <% if(locals.userLogin) { %>
-        <div class="div-button">
+        <div class="div-button cart-action">
           <h3>Carrito</h3>
-          <a href="/carrito" class="button-a">
-            <button class="user-button">
+          <a href="/carrito" class="button-a cart-link" aria-label="Ir al carrito">
+            <button class="user-button cart-button-header">
               <i class="fa-solid fa-cart-shopping"></i>
+              <span class="cart-badge <%= Number(locals.cartCount || 0) > 0 ? '' : 'cart-badge--hidden' %>"><%= Number(locals.cartCount || 0) %></span>
             </button>
           </a>
         </div>
@@ -103,4 +104,4 @@
       </ul>
     </nav>
   </section>
-</header> 
+</header>

@@ -36,6 +36,11 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       defaultValue: 'pending'
+    },
+    stockDiscounted: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
   }, {
     sequelize,

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include("../partials/head", { title: "Código de barra" }) %>
+<body class="dashboard-body">
+  <%- include("./navBar") %>
+
+  <main class="barcode-page">
+    <section class="barcode-card">
+      <h1><%= product.name %></h1>
+      <p>Código interno: <strong><%= barcode %></strong></p>
+
+      <svg class="js-barcode" data-code="<%= barcode %>"></svg>
+
+      <div class="barcode-actions">
+        <button type="button" onclick="window.print()">Imprimir</button>
+        <a href="/admin/dashboard/productos">Volver</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+  <script src="/js/barcodeRender.js"></script>
+  <style>
+    .barcode-page {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f2f2f2;
+      padding: 24px;
+    }
+    .barcode-card {
+      background: #fff;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.12);
+      text-align: center;
+      max-width: 700px;
+      width: 100%;
+    }
+    .barcode-card svg {
+      max-width: 100%;
+      margin: 18px 0;
+    }
+    .barcode-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .barcode-actions button,
+    .barcode-actions a {
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: none;
+      text-decoration: none;
+      background: #2c4f72;
+      color: #fff;
+      font-weight: 700;
+    }
+  </style>
+</body>
+</html>

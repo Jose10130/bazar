@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <%- include("../partials/head", { title: category ? category.name : "Categoría" }) %>
 
 <body class="category-body">
@@ -17,7 +16,7 @@
     <% if (products.length > 0) { %>
       <section class="section-products">
         <% products.forEach(product => { %>
-          <div class="product-card">
+          <div class="product-card <%= Number(product.quantity || 0) <= 0 ? 'product-card--out' : '' %>">
             <button class="add-to-favorites" data-product-id="<%= product.id %>" <%= !user ? "disabled" : "" %>>
               <% if (user && user.favorites) { %>
                 <% const isFavorite = user.favorites.some(favorite => favorite.id === product.id); %>
@@ -31,18 +30,27 @@
               <img src="/images/products/<%= product.image %>" alt="<%= product.name %>">
             </div>
 
+            <% if (Number(product.quantity || 0) > 0) { %>
+              <span class="stock-status stock-status--in">Disponible</span>
+            <% } else { %>
+              <span class="stock-status stock-status--out">Sin stock</span>
+            <% } %>
+
             <div class="product-details">
               <h3 class="product-title"><%= product.name %></h3>
               <p class="product-description"><%= product.description %></p>
 
               <div class="product-price">
                 <span class="price">$<%= product.price %></span>
-                <span class="discount">$9999.99</span>
               </div>
 
               <div class="product-actions">
                 <a href="/productos/detalle/<%= product.id %>" class="view-product">Ver Producto</a>
-                <button type="button" class="add-to-cart" data-product-id="<%= product.id %>" disabled>Agregar al carrito</button>
+                <% if (Number(product.quantity || 0) > 0) { %>
+                  <button type="button" class="add-to-cart" data-product-id="<%= product.id %>" data-stock="<%= Number(product.quantity || 0) %>">Agregar al carrito</button>
+                <% } else { %>
+                  <button type="button" class="add-to-cart button-disabled" data-product-id="<%= product.id %>" data-stock="0" disabled>Sin stock</button>
+                <% } %>
               </div>
             </div>
           </div>

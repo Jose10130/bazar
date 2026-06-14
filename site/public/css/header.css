@@ -512,3 +512,29 @@ header form input {
     font-size: 14px;
   }
 }
+.cart-button-header {
+    position: relative;
+    overflow: visible;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #ef4444;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 14px rgba(239, 68, 68, 0.28);
+}
+
+.cart-badge--hidden {
+    display: none;
+}
