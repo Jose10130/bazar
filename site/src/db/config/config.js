@@ -1,7 +1,7 @@
 module.exports = {
 development: {
   username: "bazar_db_s472_user",
-  password: "zK1Y6SQY9pLd0br3LzhuKisHnPQ0qTho",
+  p paassword: "zK1Y6SQY9pLd0br3LzhuKisHnPQOqTho",
   database: "bazar_db_s472",
   host: "dpg-d8j65448aovs738vo150-a.oregon-postgres.render.com",
   port: 5432,
@@ -15,7 +15,7 @@ development: {
 },
   test: {
   username: "bazar_db_s472_user",
-  password: "zK1Y6SQY9pLd0br3LzhuKisHnPQ0qTho",
+  password: "zK1Y6SQY9pLd0br3LzhuKisHnPQOqTho",
   database: "bazar_db_s472",
   host: "dpg-d8j65448aovs738vo150-a.oregon-postgres.render.com",
   port: 5432,
@@ -29,7 +29,7 @@ development: {
   },
   production: {
     username: "bazar_db_s472_user",
-    password: "zK1Y6SQY9pLd0br3LzhuKisHnPQ0qTho",
+    password: "zK1Y6SQY9pLd0br3LzhuKisHnPQOqTho",
     database: "bazar_db_s472",
     host: "dpg-d8j65448aovs738vo150-a.oregon-postgres.render.com",
     port: 5432,
