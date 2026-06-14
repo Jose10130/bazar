@@ -40,5 +40,5 @@ development: {
         rejectUnauthorized: false
       }
     }
-  }
-}; 
+  } // <--- 1. Esta llave cierra el bloque de "production"
+}; // <--- 2. Esta llave con punto y coma cierra todo el archivo (module.exports)
