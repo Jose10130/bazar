@@ -12,7 +12,7 @@ development: {
       rejectUnauthorized: false
     }
   }
-}
+},
   test: {
   username: "bazar_db_s472_user",
   password: "zK1Y6SQY9pLd0br3LzhuKisHnPQ0qTho",
