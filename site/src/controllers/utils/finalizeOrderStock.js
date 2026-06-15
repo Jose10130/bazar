@@ -13,17 +13,10 @@ const getPurchasedQuantity = (product) => Number(
 ) || 0;
 
 module.exports = async (orderId, transaction) => {
+  // 👉 Cambio: Buscamos primero solo la orden sin JOIN para poder usar el bloqueo
   const order = await db.Order.findByPk(orderId, {
     transaction,
-    lock: transaction.LOCK.UPDATE,
-    include: [
-      {
-        association: 'products',
-        through: {
-          attributes: ['quantity']
-        }
-      }
-    ]
+    lock: transaction.LOCK.UPDATE
   });
 
   if (!order) {
@@ -36,9 +29,13 @@ module.exports = async (orderId, transaction) => {
     return order;
   }
 
-  const products = Array.isArray(order.products) ? order.products : [];
+  // 👉 Cambio: Ahora cargamos los productos por separado, sin afectar el bloqueo
+  const products = await order.getProducts({
+    transaction,
+    joinTableAttributes: ['quantity']
+  });
 
-  if (products.length === 0) {
+  if (!Array.isArray(products) || products.length === 0) {
     const error = new Error('No se puede finalizar una orden vacía');
     error.status = 400;
     throw error;

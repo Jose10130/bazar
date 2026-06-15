@@ -33,7 +33,13 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 'pending',
       validate: {
         isIn: [['pending', 'completed', 'canceled']]
+      
       }
+    },
+    stockDiscounted: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
   }, {
     sequelize,
