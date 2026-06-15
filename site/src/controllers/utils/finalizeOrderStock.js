@@ -13,7 +13,7 @@ const getPurchasedQuantity = (product) => Number(
 ) || 0;
 
 module.exports = async (orderId, transaction) => {
-  // 👉 Cambio: Buscamos primero solo la orden sin JOIN para poder usar el bloqueo
+  // Buscamos solo la orden primero
   const order = await db.Order.findByPk(orderId, {
     transaction,
     lock: transaction.LOCK.UPDATE
@@ -29,32 +29,32 @@ module.exports = async (orderId, transaction) => {
     return order;
   }
 
-  // 👉 Cambio: Ahora cargamos los productos por separado, sin afectar el bloqueo
-  const products = await order.getProducts({
-    transaction,
-    joinTableAttributes: ['quantity']
+  // 📌 Consultamos directamente la tabla intermedia para tener todo seguro
+  const orderItems = await db.Orderproducts.findAll({
+    where: { orderId: order.id },
+    attributes: ['productId', 'quantity'],
+    transaction
   });
 
-  if (!Array.isArray(products) || products.length === 0) {
+  if (!Array.isArray(orderItems) || orderItems.length === 0) {
     const error = new Error('No se puede finalizar una orden vacía');
     error.status = 400;
     throw error;
   }
 
-  for (const product of products) {
-    const purchaseQuantity = getPurchasedQuantity(product);
+  // Procesamos cada producto
+  for (const item of orderItems) {
+    const purchaseQuantity = Number(item.quantity) || 0;
 
-    if (purchaseQuantity <= 0) {
-      continue;
-    }
+    if (purchaseQuantity <= 0) continue;
 
-    const productRow = await db.Product.findByPk(product.id, {
+    const productRow = await db.Product.findByPk(item.productId, {
       transaction,
       lock: transaction.LOCK.UPDATE
     });
 
     if (!productRow) {
-      const error = new Error(`No se encontró el producto ${product.name || product.id}`);
+      const error = new Error(`No se encontró el producto con ID: ${item.productId}`);
       error.status = 404;
       throw error;
     }
@@ -70,17 +70,13 @@ module.exports = async (orderId, transaction) => {
     }
 
     await productRow.update(
-      {
-        quantity: currentStock - purchaseQuantity
-      },
+      { quantity: currentStock - purchaseQuantity },
       { transaction }
     );
   }
 
   await order.update(
-    {
-      stockDiscounted: true
-    },
+    { stockDiscounted: true },
     { transaction }
   );
 
