@@ -29,32 +29,31 @@ module.exports = async (orderId, transaction) => {
     return order;
   }
 
-  // ✅ Cambio: Usamos el nombre correcto del modelo intermedio
-  const orderItems = await db.Orderproduct.findAll({
-    where: { orderId: order.id },
-    attributes: ['productId', 'quantity'],
+  // ✅ Usamos el método asociación propio de Sequelize, NO llamamos al modelo por su nombre
+  const products = await order.getProducts({
+    joinTableAttributes: ['quantity'],
     transaction
   });
 
-  if (!Array.isArray(orderItems) || orderItems.length === 0) {
+  if (!Array.isArray(products) || products.length === 0) {
     const error = new Error('No se puede finalizar una orden vacía');
     error.status = 400;
     throw error;
   }
 
   // Procesamos cada producto
-  for (const item of orderItems) {
-    const purchaseQuantity = Number(item.quantity) || 0;
+  for (const product of products) {
+    const purchaseQuantity = getPurchasedQuantity(product);
 
     if (purchaseQuantity <= 0) continue;
 
-    const productRow = await db.Product.findByPk(item.productId, {
+    const productRow = await db.Product.findByPk(product.id, {
       transaction,
       lock: transaction.LOCK.UPDATE
     });
 
     if (!productRow) {
-      const error = new Error(`No se encontró el producto con ID: ${item.productId}`);
+      const error = new Error(`No se encontró el producto: ${product.name || product.id}`);
       error.status = 404;
       throw error;
     }
