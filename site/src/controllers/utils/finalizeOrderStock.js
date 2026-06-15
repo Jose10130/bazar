@@ -29,8 +29,8 @@ module.exports = async (orderId, transaction) => {
     return order;
   }
 
-  // 📌 Consultamos directamente la tabla intermedia para tener todo seguro
-  const orderItems = await db.Orderproducts.findAll({
+  // ✅ Cambio: Usamos el nombre correcto del modelo intermedio
+  const orderItems = await db.Orderproduct.findAll({
     where: { orderId: order.id },
     attributes: ['productId', 'quantity'],
     transaction
