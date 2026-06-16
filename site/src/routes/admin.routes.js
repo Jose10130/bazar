@@ -18,6 +18,7 @@ router.get("/dashboard/ordenes", checkAdmin, adminController.orderList);
 router.get("/dashboard/ordenes/:id", checkAdmin, adminController.orderDetail);
 router.get("/dashboard/ordenes/:id/pdf", checkAdmin, adminController.downloadOrderPdf);
 router.put("/dashboard/ordenes/:id/estado", checkAdmin, adminController.updateOrderState);
+router.post("/dashboard/ordenes/:id/descuento", checkAdmin, adminController.applyDiscount);
 
 router.get("/dashboard/ventas-dia", checkAdmin, adminController.salesDay);
 router.get("/dashboard/analiticas", checkAdmin, adminController.salesDay);

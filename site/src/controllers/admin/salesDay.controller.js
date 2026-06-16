@@ -34,15 +34,13 @@ module.exports = async (req, res) => {
       },
       include: [
         {
-          model: db.Product,
-          as: "products",
+          association: "products",
           through: {
             attributes: ["quantity"]
           }
         },
         {
-          model: db.User,
-          as: "user"
+          association: "user"
         }
       ],
       order: [["updatedAt", "DESC"]]
@@ -73,7 +71,7 @@ module.exports = async (req, res) => {
         products: items,
         subtotal,
         subtotalFormatted: currencyFormat(subtotal),
-        totalFormatted: currencyFormat(plain.total || subtotal),
+        totalFormatted: currencyFormat(plain.total ?? subtotal),
         customerName: [plain.user?.name || "", plain.user?.surname || ""].join(" ").trim() || "Sin cliente"
       };
     });
@@ -83,7 +81,7 @@ module.exports = async (req, res) => {
       (acc, order) => acc + order.products.reduce((sum, product) => sum + Number(product.quantity || 0), 0),
       0
     );
-    const totalBilled = normalizedOrders.reduce((acc, order) => acc + Number(order.total || 0), 0);
+    const totalBilled = normalizedOrders.reduce((acc, order) => acc + Number(order.total ?? 0), 0);
 
     return res.render("admin/salesDay", {
       orders: normalizedOrders,

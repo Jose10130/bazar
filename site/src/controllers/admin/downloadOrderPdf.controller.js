@@ -1,4 +1,5 @@
 const path = require("path");
+const fs = require("fs");
 const PDFDocument = require("pdfkit");
 const db = require("../../db/models");
 
@@ -25,13 +26,11 @@ module.exports = async (req, res) => {
     const order = await db.Order.findByPk(id, {
       include: [
         {
-          model: db.Product,
-          as: "products",
+          association: "products",
           through: { attributes: ["quantity"] }
         },
         {
-          model: db.User,
-          as: "user"
+          association: "user"
         }
       ]
     });
@@ -58,9 +57,11 @@ module.exports = async (req, res) => {
     });
 
     const subtotal = lines.reduce((acc, item) => acc + Number(item.subtotal || 0), 0);
-    const total = Number(plain.total || subtotal);
-    const discountAmount = Math.max(subtotal - total, 0);
-    const discountPercent = subtotal > 0 ? (discountAmount / subtotal) * 100 : 0;
+    const total = Number(plain.total ?? subtotal);
+    const discountAmount = Number(plain.discountAmount ?? Math.max(subtotal - total, 0));
+    const discountPercent = Number(
+      plain.discountPercent ?? (subtotal > 0 ? (discountAmount / subtotal) * 100 : 0)
+    );
     const fullName = [plain.user?.name || "", plain.user?.surname || ""].join(" ").trim() || "Sin cliente";
 
     const doc = new PDFDocument({
@@ -78,7 +79,7 @@ module.exports = async (req, res) => {
     const pageWidth = doc.page.width;
     const rightEdge = pageWidth - 42;
 
-    if (require("fs").existsSync(logoPath)) {
+    if (fs.existsSync(logoPath)) {
       doc.image(logoPath, 42, 28, { width: 58 });
     }
 

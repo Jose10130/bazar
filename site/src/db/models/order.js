@@ -23,6 +23,17 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DOUBLE,
       defaultValue: 0
     },
+    discountAmount: {
+      type: DataTypes.DOUBLE,
+      allowNull: false,
+      defaultValue: 0
+    },
+    discountPercent: {
+      type: DataTypes.DOUBLE,
+      allowNull: false,
+      defaultValue: 0
+    },
+
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false

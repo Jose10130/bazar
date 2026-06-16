@@ -13,12 +13,14 @@
     };
 
     const fullName = [
-      order?.user?.name || "",
-      order?.user?.surname || ""
+      order && order.user && order.user.name ? order.user.name : "",
+      order && order.user && order.user.surname ? order.user.surname : ""
     ].join(" ").trim();
 
-    const subtotalValue = Number(order?.subtotal ?? order?.total ?? 0);
-    const totalValue = Number(order?.grandTotal ?? order?.total ?? 0);
+    const subtotalValue = Number((order && order.subtotal) ?? (order && order.total) ?? 0);
+    const discountValue = Number((order && order.discountAmount) ?? 0);
+    const totalValue = Number((order && order.grandTotal) ?? (order && order.total) ?? 0);
+    const discountPercentValue = Number((order && order.discountPercent) ?? 0);
   %>
 
   <main class="admin-main-list printable-order order-detail-page">
@@ -87,7 +89,7 @@
       <div class="order-items-card">
         <div class="section-inline-title">
           <h3>Productos de la orden</h3>
-          <span class="items-count"><%= order.products.length %> ítems</span>
+          <span class="items-count"><%= (order.products || []).length %> ítems</span>
         </div>
 
         <div class="table-responsive order-table-wrap">
@@ -147,27 +149,35 @@
           </strong>
         </div>
 
-        <div class="summary-row summary-discount">
-          <label for="discountPercent">Descuento (%)</label>
-          <div class="discount-inline">
-            <input
-              type="number"
-              id="discountPercent"
-              name="discountPercent"
-              min="0"
-              max="100"
-              step="1"
-              value="0"
-              class="form-control">
-            <button type="button" id="applyDiscountBtn" class="btn btn-outline-dark order-action-btn">
-              Aplicar
-            </button>
-          </div>
-        </div>
+        <form action="/admin/dashboard/ordenes/<%= order.id %>/descuento" method="POST" id="discountForm" class="summary-discount-form">
+          <div class="summary-row summary-discount">
+            <label for="discountPercent">Descuento (%)</label>
 
-        <div class="summary-row">
+            <div class="discount-inline">
+              <input
+                type="number"
+                id="discountPercent"
+                name="discountPercent"
+                min="0"
+                max="100"
+                step="1"
+                value="<%= discountPercentValue.toFixed(0) %>"
+                class="form-control"
+                required
+              >
+
+              <button type="submit" id="applyDiscountBtn" class="btn btn-outline-dark order-action-btn">
+                Aplicar
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <div class="summary-row summary-discount-result" <%= discountValue > 0 ? "" : 'style="display:none"' %>>
           <span>Descuento</span>
-          <strong id="discountAmount">$ 0,00</strong>
+          <strong id="discountAmount">
+            <%= Number(discountValue).toLocaleString("es-AR", { style: "currency", currency: "ARS" }) %>
+          </strong>
         </div>
 
         <div class="summary-total">
@@ -206,6 +216,7 @@
     </section>
   </main>
 
+  <script src="/js/orderDetail.js"></script>
   <%- include("../partials/scripts") %>
 </body>
 </html>

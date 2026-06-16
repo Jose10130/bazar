@@ -15,5 +15,6 @@ module.exports = {
     orderDetail: require("./orderDetail.controller.js"),
     downloadOrderPdf: require("./downloadOrderPdf.controller.js"),
     updateOrderState: require("./updateOrderState.controller.js"),
+    applyDiscount: require("./applyDiscount.controller.js"),
     salesDay: require("./salesDay.controller.js")
   };

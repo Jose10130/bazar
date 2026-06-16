@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const discountAmountEl = document.getElementById("discountAmount");
   const grandTotalEl = document.getElementById("grandTotal");
   const applyDiscountBtn = document.getElementById("applyDiscountBtn");
-  const printReceiptBtn = document.getElementById("printReceiptBtn");
 
   if (!subtotalEl || !discountInput || !discountAmountEl || !grandTotalEl) {
     return;
@@ -33,51 +32,5 @@ document.addEventListener("DOMContentLoaded", () => {
     applyDiscountBtn.addEventListener("click", updateTotals);
   }
 
-  if (printReceiptBtn) {
-    printReceiptBtn.addEventListener("click", () => {
-      window.print();
-    });
-  }
-
-  function updateTotals() {
-
-    const discountPercent =
-        Math.max(
-            0,
-            Math.min(
-                100,
-                Number(discountInput.value || 0)
-            )
-        );
-
-    const discountAmount =
-        subtotal * (discountPercent / 100);
-
-    const total =
-        subtotal - discountAmount;
-
-    discountAmountEl.textContent =
-        currency.format(discountAmount);
-
-    grandTotalEl.textContent =
-        currency.format(total);
-
-    const discountRow =
-        document.querySelector(".summary-discount-result");
-
-    if(discountRow){
-
-        if(discountPercent <= 0){
-
-            discountRow.style.display = "none";
-
-        } else {
-
-            discountRow.style.display = "flex";
-
-        }
-
-    }
-
-}
+  updateTotals();
 });

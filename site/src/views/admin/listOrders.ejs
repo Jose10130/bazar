@@ -40,7 +40,7 @@
             <tr>
               <td><%= order.id %></td>
               <td><%= Number(order.total || 0).toLocaleString("es-AR", { style: "currency", currency: "ARS" }) %></td>
-              <td><%= order.user?.name || "" %> <%= order.user?.surname || "" %></td>
+              <td><%= (order.user && order.user.name ? order.user.name : "") %> <%= (order.user && order.user.surname ? order.user.surname : "") %></td>
               <td>
                 <span class="order-state-badge order-state-<%= order.state %>">
                   <%= stateLabels[order.state] || order.state %>

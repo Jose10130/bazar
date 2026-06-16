@@ -5,23 +5,23 @@ module.exports = async (req, res) => {
     const orders = await db.Order.findAll({
       include: [
         {
-          model: db.Product,
-          as: "products",
+          association: "products",
           through: {
             attributes: ["quantity"]
           }
         },
         {
-          model: db.User,
-          as: "user"
+          association: "user"
         }
       ],
       order: [["createdAt", "DESC"]]
     });
 
-    res.render("admin/listOrders", { orders });
+    const normalizedOrders = orders.map((order) => order.get({ plain: true }));
+
+    return res.render("admin/listOrders", { orders: normalizedOrders });
   } catch (error) {
     console.error("Error al obtener las órdenes:", error);
-    res.status(500).send("Error interno del servidor.");
+    return res.status(500).send("Error interno del servidor.");
   }
 };

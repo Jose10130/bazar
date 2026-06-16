@@ -12,6 +12,19 @@ const formatMoney = (value) =>
     currency: "ARS"
   });
 
+const getQuantity = (product) => Number(
+  product?.Orderproduct?.quantity ??
+  product?.Orderproducts?.quantity ??
+  product?.orderProducts?.quantity ??
+  product?.orderproduct?.quantity ??
+  product?.Orderproduct?.dataValues?.quantity ??
+  product?.Orderproducts?.dataValues?.quantity ??
+  product?.orderProducts?.dataValues?.quantity ??
+  product?.orderproduct?.dataValues?.quantity ??
+  1
+) || 1;
+
+
 module.exports = async (req, res) => {
   try {
     const { id } = req.params;
@@ -19,15 +32,13 @@ module.exports = async (req, res) => {
     const order = await db.Order.findByPk(id, {
       include: [
         {
-          model: db.Product,
-          as: "products",
+          association: "products",
           through: {
             attributes: ["quantity"]
           }
         },
         {
-          model: db.User,
-          as: "user"
+          association: "user"
         }
       ]
     });
@@ -38,15 +49,10 @@ module.exports = async (req, res) => {
 
     const plain = order.get({ plain: true });
 
-    const products = (plain.products || []).map((product) => {
-      const quantity = Number(
-        product?.Orderproduct?.quantity ??
-        product?.Orderproducts?.quantity ??
-        product?.orderProducts?.quantity ??
-        product?.orderproduct?.quantity ??
-        1
-      ) || 1;
+    const products = Array.isArray(plain.products) ? plain.products : [];
 
+    const productsNormalized = products.map((product) => {
+      const quantity = getQuantity(product);
       const price = Number(product.price || 0);
       const subtotal = price * quantity;
 
@@ -59,15 +65,27 @@ module.exports = async (req, res) => {
       };
     });
 
-    const subtotal = products.reduce((acc, product) => acc + Number(product.subtotal || 0), 0);
-    const total = Number(plain.total || subtotal);
+    const subtotal = productsNormalized.reduce(
+      (acc, product) => acc + Number(product.subtotal || 0),
+      0
+    );
+
+    const discountAmount = Number(plain.discountAmount ?? Math.max(subtotal - Number(plain.total ?? subtotal), 0));
+    const discountPercent = Number(
+      plain.discountPercent ?? (subtotal > 0 ? (discountAmount / subtotal) * 100 : 0)
+    );
+    const grandTotal = Number(plain.total ?? subtotal);
 
     const renderOrder = {
       ...plain,
-      products,
+      products: productsNormalized,
       subtotal,
       subtotalFormatted: formatMoney(subtotal),
-      grandTotalFormatted: formatMoney(total),
+      discountAmount,
+      discountAmountFormatted: formatMoney(discountAmount),
+      discountPercent,
+      grandTotal,
+      grandTotalFormatted: formatMoney(grandTotal),
       stateLabel: stateLabels[plain.state] || plain.state
     };
 
