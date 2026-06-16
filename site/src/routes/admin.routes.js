@@ -8,6 +8,7 @@ const { productsValidation } = require("../middlewares/validations");
 // "/admin"
 
 router.get("/dashboard/productos", checkAdmin, adminController.list);
+router.get("/dashboard/productos/:id/barcode", checkAdmin, adminController.barcode);
 
 router.get("/dashboard/usuarios", checkAdmin, adminController.userList);
 router.get("/dashboard/usuarios/:id", checkAdmin, adminController.userDetail);
@@ -15,7 +16,11 @@ router.put("/dashboard/usuarios/:id", checkAdmin, adminController.userEdit);
 
 router.get("/dashboard/ordenes", checkAdmin, adminController.orderList);
 router.get("/dashboard/ordenes/:id", checkAdmin, adminController.orderDetail);
+router.get("/dashboard/ordenes/:id/pdf", checkAdmin, adminController.downloadOrderPdf);
 router.put("/dashboard/ordenes/:id/estado", checkAdmin, adminController.updateOrderState);
+
+router.get("/dashboard/ventas-dia", checkAdmin, adminController.salesDay);
+router.get("/dashboard/analiticas", checkAdmin, adminController.salesDay);
 
 router.get("/dashboard/editar/:id", checkAdmin, adminController.edit);
 router.put("/dashboard/editar/:id", checkAdmin, uploadProducts.single("imageProduct"), productsValidation, adminController.update);

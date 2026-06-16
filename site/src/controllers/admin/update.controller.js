@@ -1,6 +1,8 @@
 const db = require("../../db/models");
 const { validationResult } = require("express-validator");
 
+const buildBarcode = (id) => `PRD-${String(id).padStart(8, "0")}`;
+
 module.exports = async (req, res) => {
   try {
     const errors = validationResult(req);
@@ -42,7 +44,7 @@ module.exports = async (req, res) => {
       quantity: Number(stock),
       image,
       description: description.trim(),
-      barcode: product.barcode || `PRD-${String(product.id).padStart(8, '0')}`
+      barcode: product.barcode || buildBarcode(product.id)
     });
 
     return res.redirect("/admin/dashboard/productos?updated=true");

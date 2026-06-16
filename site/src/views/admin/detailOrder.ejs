@@ -32,9 +32,14 @@
       </div>
 
       <div class="order-top-actions">
-        <button type="button" id="printReceiptBtn" class="btn btn-outline-dark order-action-btn">
+        <a
+          href="/admin/dashboard/ordenes/<%= order.id %>/pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          id="printReceiptBtn"
+          class="btn btn-outline-dark order-action-btn">
           Imprimir boleta
-        </button>
+        </a>
         <a href="/admin/dashboard/ordenes" class="btn btn-outline-secondary order-action-btn">
           Volver
         </a>

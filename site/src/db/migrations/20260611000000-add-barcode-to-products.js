@@ -10,7 +10,7 @@ module.exports = {
     });
 
     await queryInterface.sequelize.query(
-      `UPDATE "Products" SET barcode = CONCAT('PRD-', LPAD(CAST(id AS VARCHAR), 8, '0')) WHERE barcode IS NULL OR barcode = ''`
+      "UPDATE Products SET barcode = CONCAT('PRD-', LPAD(id, 8, '0')) WHERE barcode IS NULL OR barcode = ''"
     );
   },
 

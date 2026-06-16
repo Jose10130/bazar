@@ -37,6 +37,7 @@
     "passport-google-oauth": "^2.0.0",
     "pg": "^8.21.0",
     "pg-hstore": "^2.3.4",
+    "pdfkit": "^0.19.1",
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.6.2",
     "sequelize-paginate": "^1.1.6",

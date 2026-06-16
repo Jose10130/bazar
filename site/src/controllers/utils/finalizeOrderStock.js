@@ -13,10 +13,17 @@ const getPurchasedQuantity = (product) => Number(
 ) || 0;
 
 module.exports = async (orderId, transaction) => {
-  // Buscamos solo la orden primero
   const order = await db.Order.findByPk(orderId, {
     transaction,
-    lock: transaction.LOCK.UPDATE
+    lock: transaction.LOCK.UPDATE,
+    include: [
+      {
+        association: 'products',
+        through: {
+          attributes: ['quantity']
+        }
+      }
+    ]
   });
 
   if (!order) {
@@ -29,23 +36,20 @@ module.exports = async (orderId, transaction) => {
     return order;
   }
 
-  // ✅ Usamos el método asociación propio de Sequelize, NO llamamos al modelo por su nombre
-  const products = await order.getProducts({
-    joinTableAttributes: ['quantity'],
-    transaction
-  });
+  const products = Array.isArray(order.products) ? order.products : [];
 
-  if (!Array.isArray(products) || products.length === 0) {
+  if (products.length === 0) {
     const error = new Error('No se puede finalizar una orden vacía');
     error.status = 400;
     throw error;
   }
 
-  // Procesamos cada producto
   for (const product of products) {
     const purchaseQuantity = getPurchasedQuantity(product);
 
-    if (purchaseQuantity <= 0) continue;
+    if (purchaseQuantity <= 0) {
+      continue;
+    }
 
     const productRow = await db.Product.findByPk(product.id, {
       transaction,
@@ -53,7 +57,7 @@ module.exports = async (orderId, transaction) => {
     });
 
     if (!productRow) {
-      const error = new Error(`No se encontró el producto: ${product.name || product.id}`);
+      const error = new Error(`No se encontró el producto ${product.name || product.id}`);
       error.status = 404;
       throw error;
     }
@@ -69,13 +73,17 @@ module.exports = async (orderId, transaction) => {
     }
 
     await productRow.update(
-      { quantity: currentStock - purchaseQuantity },
+      {
+        quantity: currentStock - purchaseQuantity
+      },
       { transaction }
     );
   }
 
   await order.update(
-    { stockDiscounted: true },
+    {
+      stockDiscounted: true
+    },
     { transaction }
   );
 

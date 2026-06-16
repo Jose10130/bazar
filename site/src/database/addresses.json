@@ -32,11 +32,11 @@
    {
       "id": 4,
       "active": true,
-      "street": "Las Heras",
+      "street": "CAUCTE ",
       "streetNo": 321,
-      "city": "Luján de Cuyo",
-      "province": "Mendoza",
-      "zipCode": 5507,
+      "city": "Ciudad DE CAUCETE",
+      "province": "San Juan",
+      "zipCode": 5442,
       "country": "Argentina"
    }
 ]

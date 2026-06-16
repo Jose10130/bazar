@@ -32,7 +32,12 @@ module.exports = (sequelize, DataTypes) => {
     categoryId: DataTypes.INTEGER,
     quantity: DataTypes.INTEGER,
     image: DataTypes.STRING,
-    description: DataTypes.TEXT
+    description: DataTypes.TEXT,
+    barcode: {
+      type: DataTypes.STRING(64),
+      allowNull: true,
+      defaultValue: null
+    }
   }, {
     sequelize,
     modelName: 'Product',

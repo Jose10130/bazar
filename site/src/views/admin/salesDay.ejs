@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include("../partials/head", { title: "Ventas del día" }) %>
+
+<body class="dashboard-body">
+  <%- include("./navBar") %>
+
+  <main class="admin-main-list">
+    <div class="admin-header-list">
+      <div class="admin-header-list-title">
+        <h2>Ventas del día</h2>
+        <p class="text-muted mb-0"><%= dateLabel %></p>
+      </div>
+    </div>
+
+    <section class="row g-3 mb-4">
+      <div class="col-12 col-md-4">
+        <div class="card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <p class="text-muted mb-1">Pedidos finalizados hoy</p>
+            <h3 class="mb-0"><%= summary.totalOrders %></h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <div class="card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <p class="text-muted mb-1">Productos vendidos</p>
+            <h3 class="mb-0"><%= summary.totalProductsSold %></h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <div class="card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <p class="text-muted mb-1">Monto facturado</p>
+            <h3 class="mb-0"><%= summary.totalBilledFormatted %></h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+          <h3 class="mb-0">Órdenes completadas hoy</h3>
+          <span class="badge text-bg-primary"><%= orders.length %> órdenes</span>
+        </div>
+
+        <% if (!orders.length) { %>
+          <div class="alert alert-info mb-0">No hay órdenes finalizadas hoy.</div>
+        <% } else { %>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-dark">
+                <tr>
+                  <th>Orden</th>
+                  <th>Cliente</th>
+                  <th>Productos</th>
+                  <th>Total</th>
+                  <th>Actualizada</th>
+                  <th>Detalle</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% orders.forEach(order => { %>
+                  <tr>
+                    <td>#<%= order.id %></td>
+                    <td><%= order.customerName %></td>
+                    <td><%= order.products.reduce((sum, product) => sum + Number(product.quantity || 0), 0) %></td>
+                    <td><%= order.totalFormatted %></td>
+                    <td><%= new Date(order.updatedAt).toLocaleString("es-AR") %></td>
+                    <td>
+                      <a href="/admin/dashboard/ordenes/<%= order.id %>" class="btn btn-sm btn-success">
+                        Ver orden
+                      </a>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        <% } %>
+      </div>
+    </section>
+  </main>
+
+  <%- include("../partials/scripts") %>
+</body>
+</html>

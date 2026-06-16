@@ -1,5 +1,6 @@
 module.exports = {
     list: require("./productList.controller.js"),
+    barcode: require("./barcode.controller.js"),
     userList: require("./userList.controller.js"),
     userDetail: require("./userDetail.controller.js"),
     userEdit: require("./userEdit.controller.js"),
@@ -12,5 +13,7 @@ module.exports = {
     restore: require("./restore.controller.js"),
     orderList: require("./orderList.controller.js"),
     orderDetail: require("./orderDetail.controller.js"),
-    updateOrderState: require("./updateOrderState.controller.js")
+    downloadOrderPdf: require("./downloadOrderPdf.controller.js"),
+    updateOrderState: require("./updateOrderState.controller.js"),
+    salesDay: require("./salesDay.controller.js")
   };
