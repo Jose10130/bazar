@@ -15,17 +15,10 @@ module.exports = async (req, res) => {
       return res.status(400).send("Estado inválido");
     }
 
+    // ✅ Quitamos el include aquí para poder usar LOCK.UPDATE en Postgres
     const order = await db.Order.findByPk(id, {
       transaction,
-      lock: transaction.LOCK.UPDATE,
-      include: [
-        {
-          association: 'products',
-          through: {
-            attributes: ['quantity']
-          }
-        }
-      ]
+      lock: transaction.LOCK.UPDATE
     });
 
     if (!order) {
